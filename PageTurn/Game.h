@@ -29,14 +29,19 @@ private:
 	void render();
 	
 	void setupFontAndText();
-	void setupSprite();
+	void setupSprites();
 
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_ArialBlackfont; // font used by message
-	sf::Text m_welcomeMessage; // text used for message on screen
-	sf::Texture m_logoTexture; // texture used for sfml logo
-	sf::Sprite m_logoSprite; // sprite used for sfml logo
+	sf::Text m_instructions; // text used for message on screen
+	sf::Texture m_pageTexture; // texture used for current page
+	sf::Texture m_nextPageTexture; // texture for next page
+	
+	sf::VertexArray m_pageVertexArray{ sf::TriangleFan }; // departing page
+	sf::Sprite m_nextPageSprite; // page behind
 	bool m_exitGame; // control exiting game
+
+
 
 };
 
