@@ -77,6 +77,11 @@ void Game::processEvents()
 		{
 			processKeys(newEvent);
 		}
+		if (sf::Event::MouseButtonPressed == newEvent.type
+			|| sf::Event::MouseButtonReleased == newEvent.type)
+		{
+			processMouseClicks(newEvent);
+		}
 	}
 }
 
@@ -90,6 +95,32 @@ void Game::processKeys(sf::Event t_event)
 	if (sf::Keyboard::Escape == t_event.key.code)
 	{
 		m_exitGame = true;
+	}
+}
+
+void Game::processMouseClicks(sf::Event t_event)
+{
+	if (sf::Event::MouseButtonPressed == t_event.type)
+	{
+		if (sf::Mouse::Button::Left == t_event.mouseButton.button)
+		{
+
+		}
+		if (sf::Mouse::Button::Right == t_event.mouseButton.button)
+		{
+
+		}
+	}
+	if (sf::Event::MouseButtonReleased == t_event.type)
+	{
+		if (sf::Mouse::Button::Left == t_event.mouseButton.button)
+		{
+
+		}
+		if (sf::Mouse::Button::Right == t_event.mouseButton.button)
+		{
+
+		}
 	}
 }
 
