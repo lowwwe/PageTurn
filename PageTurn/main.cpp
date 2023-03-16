@@ -1,8 +1,8 @@
 /// <summary>
-/// simple game loop for SFML[2.5.1]
+/// Page turning example
 /// 
 /// @author Peter Lowe
-/// @date May 2019
+/// @date Mar 2023
 /// </summary>
 
 #ifdef _DEBUG 
