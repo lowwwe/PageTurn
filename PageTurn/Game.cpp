@@ -142,10 +142,25 @@ void Game::update(sf::Time t_deltaTime)
 void Game::render()
 {
 	m_window.clear(sf::Color::White);
-	m_window.draw(m_nextPageSprite);
+	if (m_SpriteFirst)
+	{
+		m_window.draw(m_nextPageSprite);
+		m_window.draw(m_pageVertexArray, &m_pageTexture);
+	}
+	else
+	{
+		m_window.draw(m_pageVertexArray,&m_pageTexture);
+		//m_window.draw(m_nextPageSprite);		
+	}
+	
 	m_window.draw(m_instructions);
 	
 	m_window.display();
+}
+
+bool Game::pageTurn()
+{
+	return false;
 }
 
 /// <summary>
@@ -171,11 +186,34 @@ void Game::setupFontAndText()
 /// </summary>
 void Game::setupSprites()
 {
+	sf::Vertex point;
+
 	if (!m_pageTexture.loadFromFile("ASSETS\\IMAGES\\page1.jpg"))
 	{
 		// simple error message if previous call fails
 		std::cout << "problem loading Page" << std::endl;
 	}
 	m_nextPageSprite.setTexture(m_pageTexture);
+
+	point.color = sf::Color::Red;
+	point.position.x = 0.0f;
+	point.position.y = 600.0f;
+	point.texCoords = point.position;
+	m_pageVertexArray.append(point); // bottom left
+	
+	point.position.y = 0.0f;
+	point.texCoords = point.position;
+	m_pageVertexArray.append(point);  // top left
+	
+	point.position.x = 800.0f;
+	point.texCoords = point.position;
+	m_pageVertexArray.append(point); // top right
+
+	m_pageVertexArray.append(point); // top right second
+
+	point.position.y = 600.0f;
+	point.texCoords = point.position;
+	m_pageVertexArray.append(point); // bottom left
+
 
 }

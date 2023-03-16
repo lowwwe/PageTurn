@@ -11,6 +11,9 @@
 /// </summary>
 #include <SFML/Graphics.hpp>
 
+const int MAX_FRAMES = 30;
+
+
 class Game
 {
 public:
@@ -28,7 +31,7 @@ private:
 	void processMouseClicks(sf::Event t_event);
 	void update(sf::Time t_deltaTime);
 	void render();
-	
+	bool pageTurn();
 	void setupFontAndText();
 	void setupSprites();
 
@@ -38,6 +41,9 @@ private:
 	sf::Texture m_pageTexture; // texture used for current page
 	sf::Texture m_nextPageTexture; // texture for next page
 	
+	int m_currentPage{ 0 };
+	bool m_SpriteFirst{ true };
+	int m_currentFrame{ 0 };
 	sf::VertexArray m_pageVertexArray{ sf::TriangleFan }; // departing page
 	sf::Sprite m_nextPageSprite; // page behind
 	bool m_exitGame; // control exiting game
