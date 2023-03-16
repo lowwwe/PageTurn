@@ -100,26 +100,40 @@ void Game::processKeys(sf::Event t_event)
 
 void Game::processMouseClicks(sf::Event t_event)
 {
+	std::string filename = "ASSETS\\IMAGES\\page";
 	if (sf::Event::MouseButtonPressed == t_event.type)
 	{
 		if (sf::Mouse::Button::Left == t_event.mouseButton.button)
 		{
-
+			m_currentPage = ++m_currentPage % 3;
+			filename = filename + std::to_string(m_currentPage) + ".jpg";
+			m_pageTexture = m_nextPageTexture;
+			m_nextPageTexture.loadFromFile(filename);
+			m_nextPageSprite.setTexture(m_nextPageTexture);
+			m_SpriteFirst = true;
 		}
 		if (sf::Mouse::Button::Right == t_event.mouseButton.button)
 		{
-
+			m_currentPage = (m_currentPage + 2) % 3;
+			filename = filename + std::to_string(m_currentPage) + ".jpg";
+			m_pageTexture = m_nextPageTexture;
+			m_nextPageTexture.loadFromFile(filename);
+			m_nextPageSprite.setTexture(m_nextPageTexture);
+			m_SpriteFirst = true;
 		}
 	}
 	if (sf::Event::MouseButtonReleased == t_event.type)
 	{
 		if (sf::Mouse::Button::Left == t_event.mouseButton.button)
 		{
+			m_turning = true;
+			m_currentFrame = 0;
 
 		}
 		if (sf::Mouse::Button::Right == t_event.mouseButton.button)
 		{
-
+			m_turning = true;
+			m_currentFrame = 0;
 		}
 	}
 }
@@ -133,6 +147,10 @@ void Game::update(sf::Time t_deltaTime)
 	if (m_exitGame)
 	{
 		m_window.close();
+	}
+	if (m_turning)
+	{
+		m_turning = pageTurn();
 	}
 }
 
@@ -149,7 +167,8 @@ void Game::render()
 	}
 	else
 	{
-		m_window.draw(m_pageVertexArray,&m_pageTexture);
+		m_window.draw(m_nextPageSprite);
+		//m_window.draw(m_pageVertexArray,&m_pageTexture);
 		//m_window.draw(m_nextPageSprite);		
 	}
 	
@@ -160,7 +179,24 @@ void Game::render()
 
 bool Game::pageTurn()
 {
-	return false;
+	float dx = 800.0f / MAX_FRAMES;
+	float dy = 600.0f / MAX_FRAMES;
+
+	m_pageVertexArray[2].position.x -= 2*dx;
+	m_pageVertexArray[2].position.y += dy;
+	m_pageVertexArray[3].position.x -= dx;
+	m_pageVertexArray[3].position.y += 2*dy;
+	
+
+
+	m_currentFrame++;
+	if (m_currentFrame > MAX_FRAMES)
+	{
+		m_SpriteFirst = false;
+		resetVertexArray();
+		return false;
+	}
+	return true;
 }
 
 /// <summary>
@@ -188,14 +224,19 @@ void Game::setupSprites()
 {
 	sf::Vertex point;
 
-	if (!m_pageTexture.loadFromFile("ASSETS\\IMAGES\\page1.jpg"))
+	if (!m_nextPageTexture.loadFromFile("ASSETS\\IMAGES\\page0.jpg"))
+	{
+		// simple error message if previous call fails
+		std::cout << "problem loading Page" << std::endl;
+	}
+	if (!m_pageTexture.loadFromFile("ASSETS\\IMAGES\\page0.jpg"))
 	{
 		// simple error message if previous call fails
 		std::cout << "problem loading Page" << std::endl;
 	}
 	m_nextPageSprite.setTexture(m_pageTexture);
 
-	point.color = sf::Color::Red;
+	point.color = sf::Color::White;
 	point.position.x = 0.0f;
 	point.position.y = 600.0f;
 	point.texCoords = point.position;
@@ -216,4 +257,10 @@ void Game::setupSprites()
 	m_pageVertexArray.append(point); // bottom left
 
 
+}
+
+void Game::resetVertexArray()
+{
+	m_pageVertexArray[2].position = sf::Vector2f(800.0f, 0.0f);
+	m_pageVertexArray[3].position = sf::Vector2f(800.0f, 0.0f);
 }

@@ -34,6 +34,8 @@ private:
 	bool pageTurn();
 	void setupFontAndText();
 	void setupSprites();
+	void resetVertexArray();
+
 
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_ArialBlackfont; // font used by message
@@ -42,8 +44,9 @@ private:
 	sf::Texture m_nextPageTexture; // texture for next page
 	
 	int m_currentPage{ 0 };
-	bool m_SpriteFirst{ true };
+	bool m_SpriteFirst{ false };
 	int m_currentFrame{ 0 };
+	bool m_turning = { false };
 	sf::VertexArray m_pageVertexArray{ sf::TriangleFan }; // departing page
 	sf::Sprite m_nextPageSprite; // page behind
 	bool m_exitGame; // control exiting game
